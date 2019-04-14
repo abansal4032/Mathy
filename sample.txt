@@ -1,0 +1,90 @@
+﻿CS 6250 - Computer Networks I
+Fall 2018
+Date : 30th October 2018
+Title : Programming Assignment
+
+
+Name : Archit Bansal
+Email : abansal88@gatech.edu
+GTID : 903396126
+
+
+
+
+1. Happy case
+ 
+Evaluating the expression : 
+(100 + 34) / (5.6 - 4)
+Postfix representation : 
+100 34 + 5.6 4 - /
+
+archit@archit:~/assignments/CN$ ./rpnserver.py
+Server received :  100 34 +
+Server received :  5.6 4 -
+Server received :  134.0 1.6 /
+
+
+archit@archit:~/assignments/CN$ ./rpnclient.py 65432 "100 34 + 5.6 4 - /"
+Client received :  134.0
+Client received :  1.6
+Client received final :  83.75
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2. Input is more than 1024 chars
+
+archit@archit:~/assignments/CN$ ./rpnclient.py 65432 "-100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 * 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 *"
+too long an expression : max length allowed is 1024
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+3. Division by zero case 1
+
+archit@archit:~/assignments/CN$ ./rpnserver.py
+
+
+archit@archit:~/assignments/CN$ ./rpnclient.py 65432 "10 0 /"
+error while sending/receiving data to the server :  error in the input : divide by zero encountered
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Division by zero case 2
+
+archit@archit:~/assignments/CN$ ./rpnserver.py
+Server received :  12 1 +
+Server received :  10 10 -
+
+
+archit@archit:~/assignments/CN$ ./rpnclient.py 65432 "12 1 + 10 10 - /"
+Client received :  13.0
+Client received :  0.0
+error while sending/receiving data to the server :  error in the input : divide by zero encountered
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+4. Invalid postfix expression
+
+archit@archit:~/assignments/CN$ ./rpnserver.py
+
+
+archit@archit:~/assignments/CN$ ./rpnclient.py 65432 "12 1 + 10 9 - / +"
+please give a valid postfix expression :  12 1 + 10 9 - / +
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+5. Invalid input
+
+archit@archit:~/assignments/CN$ ./rpnserver.py
+
+
+archit@archit:~/assignments/CN$ ./rpnclient.py 65432 "11a 12 +"
+unrecognised input :  11a
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+6. Server not listening on the given port
+
+archit@archit:~/assignments/CN$ ./rpnserver.py
+
+archit@archit:~/assignments/CN$ ./rpnclient.py 65431 " 1 1 + "
+error while connecting to the server :  [Errno 111] Connection refused
