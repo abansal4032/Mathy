@@ -1,0 +1,4 @@
+The program is able to 1) read arbitrary postfix expressions from the client command line,
+2) have the client transmit the expression to a server where the computation will be performed, 3)
+have the server return the answer to the client, and 4) have the client print the answer to the screen.
+The client will not do any calculation but will instead send a request to the server to be calculated.
